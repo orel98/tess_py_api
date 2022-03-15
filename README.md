@@ -61,6 +61,11 @@ with Pyapi("eng") as api:
   print(api.image_to_string("/path/to/image"))
 ```
 
+## LICENSE
+
+This repository is under the MIT license.
+The repository wraps code under the Apache 2.0 license for [Tesseract](https://github.com/tesseract-ocr/tesseract/blob/master/LICENSE).
+
 
 
 

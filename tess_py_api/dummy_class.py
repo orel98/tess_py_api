@@ -11,7 +11,3 @@ class dummy:
     def __getattr__(self, *args, **kwargs):
         return dummy
 
-
-a = dummy()
-
-print(a.fas())

@@ -4,7 +4,6 @@ from ctypes import *
 from PIL import Image
 from PIL.ImageFile import ImageFile
 
-# TODO: mac & check linux distros
 if os.name == "posix":
     TESSLIB_NAME = "libtesseract.so"
     TESSDATA_PREFIX = str(os.getenv("TESSDATA_PREFIX")).encode()
@@ -26,13 +25,9 @@ else:
     print(f"{os.name} not supported..")
     exit(-1)
 
-# DEV
-if __name__ == "__main__":
-    from TessPyWrap.CpyAPI import CpyAPI
-    from TessPyWrap import capi_types
-else:
-    from .TessPyWrap.CpyAPI import CpyAPI
-    from .TessPyWrap import capi_types
+
+from .TessPyWrap.CpyAPI import CpyAPI
+from .TessPyWrap import capi_types
 
 
 _cv = False
@@ -58,7 +53,6 @@ class Pyapi(object):
     def __init__(self, lang=None) -> None:
         self.c_api = CpyAPI(self._TESSLIB_NAME)
 
-        # TODO:? What Init3?
         self.c_api.TessBaseAPIInit3(self._TESSDATA_PREFIX, lang.encode())
 
     def __enter__(self):
@@ -75,7 +69,6 @@ class Pyapi(object):
     def tess_version(self) -> str:
         return self.c_api.TessVersion().decode()
 
-    # TODO: Add error handling
     @staticmethod
     def get_image_data(img: str | np.ndarray | ImageFile):
         img_type = type(img)

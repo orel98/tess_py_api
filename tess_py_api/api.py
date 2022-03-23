@@ -50,11 +50,6 @@ except:
 
     Image, ImageFile = dummy(), dummy()
 
-# DEBUG:
-# _PIL, _cv = False, False
-# if not _PIL and not _cv:
-#     pass
-
 
 class Pyapi(object):
 

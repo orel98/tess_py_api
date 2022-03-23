@@ -1,6 +1,6 @@
 # tess_py_api
 ### Python wrapper around [Tesseract-OCR](https://github.com/tesseract-ocr/tesseract) C language API using Python built-in ctypes module.
-tess_py_api is much faster than [pytesseract](https://github.com/madmaze/pytesseract) when dealing with more than one image and lets Python developers use all of the Tesseract library functionality using the auto-generated [Python base wrapper](https://github.com/orel98/tess_py_api/TessPyWrap/CpyAPI.py).
+tess_py_api is much faster than [pytesseract](https://github.com/madmaze/pytesseract) when dealing with more than one image and lets Python developers use all of the Tesseract library functionality using the auto-generated [Python base wrapper](https://github.com/orel98/tess_py_api/blob/main/tess_py_api/TessPyWrap).
 
 
 ## INSTALLATION

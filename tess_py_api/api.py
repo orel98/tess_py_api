@@ -1,8 +1,6 @@
 import os
 from ctypes import *
 
-from PIL import Image
-from PIL.ImageFile import ImageFile
 
 if os.name == "posix":
     TESSLIB_NAME = "libtesseract.so"
@@ -40,6 +38,22 @@ except ModuleNotFoundError as e:
     from .dummy_class import dummy
 
     np, cv = dummy(), dummy()
+
+_PIL = False
+try:
+    from PIL import Image
+    from PIL.ImageFile import ImageFile
+
+    _PIL = True
+except:
+    from .dummy_class import dummy
+
+    Image, ImageFile = dummy(), dummy()
+
+# DEBUG:
+# _PIL, _cv = False, False
+# if not _PIL and not _cv:
+#     pass
 
 
 class Pyapi(object):
@@ -98,18 +112,28 @@ class Pyapi(object):
             )
 
         # RECORSION
-        # load the image to opencv(numpy ndarray) if install
-        # else load as PIL image
+        # load the image to opencv(numpy ndarray) if installed
+        # else load as PIL image if installed
+        # else return None
+
         if img_type == str:
             if _cv:
                 return Pyapi.get_image_data(cv.imread(img))
-            return Pyapi.get_image_data(Image.open(img))
+            elif _PIL:
+                return Pyapi.get_image_data(Image.open(img))
+            else:
+                return
 
-        print(f"type '{img_type.__name__}' not supported..")
+        raise NotImplementedError(f"type '{img_type.__name__}' not supported..")
 
     def image_to_string(self, img: np.ndarray | str | ImageFile) -> str | None:
         if data := self.get_image_data(img):
             self.c_api.TessBaseAPISetImage(*data)
+            res = self.c_api.TessBaseAPIGetUTF8Text()
+            return res.decode()
+
+        else:
+            self.c_api.TessBaseAPIProcessPages(img.encode(), None, 0, None)
             res = self.c_api.TessBaseAPIGetUTF8Text()
             return res.decode()
         print("No image data")
@@ -128,6 +152,10 @@ class Pyapi(object):
     def image_to_alto_xml(
         self, img: np.ndarray | str | ImageFile, page_number=1
     ) -> str | None:
+
         if data := self.get_image_data(img):
             self.c_api.TessBaseAPISetImage(*data)
+            return self.c_api.TessBaseAPIGetAltoText(page_number)
+        else:
+            self.c_api.TessBaseAPIProcessPages(img.encode(), None, 0, None)
             return self.c_api.TessBaseAPIGetAltoText(page_number)

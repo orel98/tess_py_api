@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from xml.dom import NotSupportedErr
 from tess_py_api import Pyapi
 import cv2 as cv
 import numpy as np
@@ -48,4 +49,9 @@ def test_image_to_string_results():
 
 def test_get_image_data():
     api = pyapi.get_image_data
-    assert api(1) == None
+    try:
+        api(1)
+    except NotImplementedError:
+        assert True
+    else:
+        assert False

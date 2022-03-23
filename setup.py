@@ -5,7 +5,7 @@ with open("./README.md") as f:
 
 setup(
     name="tess_py_api",
-    version="0.0.11",
+    version="0.0.12",
     author="Orel Kalaf",
     author_email="orelron98@gmail.com",
     long_description=long_description,
